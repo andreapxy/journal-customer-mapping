@@ -51,10 +51,36 @@ output_data = {
   'Keyword': [],
 }
 
+def longest_common_substring(strings):
+    if not strings:
+        return ""
+
+    # Find the shortest string in the list
+    shortest = min(strings, key=len)
+
+    def is_common_substring(substring, strings):
+        return all(substring in s for s in strings)
+
+    max_length = 0
+    longest_substring = ""
+
+    for start in range(len(shortest)):
+        for end in range(start + max_length + 1, len(shortest) + 1):
+            substring = shortest[start:end]
+            if is_common_substring(substring, strings):
+                max_length = len(substring)
+                longest_substring = substring
+
+    return longest_substring
+
+output_dict = {}
 for key in customer_dict:
-  for value in customer_dict[key]:
-    output_data['CustomerRef'].append(key)
-    output_data['Keyword'].append(value)
+  longest_substring = longest_common_substring(customer_dict[key])
+  output_dict[key] = longest_substring
+
+for key in my_dict:
+  output_data['CustomerRef'].append(key)
+  output_data['Keyword'].append(my_dict[key])
 
 # Create a DataFrame from the dictionary
 df = pd.DataFrame(output_data)

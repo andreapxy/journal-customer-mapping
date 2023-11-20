@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 pandas = "*"
 openpyxl = "*"  # Add openpyxl as a dependency
+numpy = "*"
 
 [dev-packages]
 
