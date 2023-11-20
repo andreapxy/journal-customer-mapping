@@ -78,9 +78,9 @@ for key in customer_dict:
   longest_substring = longest_common_substring(customer_dict[key])
   output_dict[key] = longest_substring
 
-for key in my_dict:
+for key in output_dict:
   output_data['CustomerRef'].append(key)
-  output_data['Keyword'].append(my_dict[key])
+  output_data['Keyword'].append(output_dict[key])
 
 # Create a DataFrame from the dictionary
 df = pd.DataFrame(output_data)
