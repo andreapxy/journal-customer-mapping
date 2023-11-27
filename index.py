@@ -21,14 +21,14 @@ for index, row in df_inv_excel.iterrows():
       in_customer_section = False
       continue
     if in_customer_section == True and not pd.isnull(df_inv_excel.iloc[index, 2]):
-      if df_inv_excel.iloc[index, 2].startswith('SVP') or df_inv_excel.iloc[index, 2].startswith('MOP'):
+      if df_inv_excel.iloc[index, 2].startswith('SVP') or df_inv_excel.iloc[index, 2].startswith('MOP') or df_inv_excel.iloc[index, 2].startswith('PFTI'):
         customer_inv_tuple_list.append((customer_account, df_inv_excel.iloc[index, 2]))
 
 # Read the Bank Transactions CSV file into a pandas DataFrame
 df_2_csv = pd.read_csv(input_csv)
 
 # Create a regular expression pattern to match the MAP, MOP, and SVP keywords
-pattern = re.compile(r'\b(MAP|MOP|SVP)\s*(\d+)\b', re.IGNORECASE)
+pattern = re.compile(r'\b(MAP|MOP|SVP|PFTI)\s*(\d+)\b', re.IGNORECASE)
 
 # Create a new column called 'MAPID' and set it to ''
 new_column_values = []
