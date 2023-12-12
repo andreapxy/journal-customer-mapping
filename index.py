@@ -2,11 +2,21 @@ import pandas as pd
 import re
 
 inv_excel = "open transactions.xlsx"
+lookup_excel = "lookup.xlsx"
 input_csv = 'input.csv'
 results_excel = 'results.csv'
 
 # Read the Excel file into a pandas DataFrame
 df_inv_excel = pd.read_excel(inv_excel)
+df_lookup_excel = pd.read_excel(lookup_excel)
+
+lookup_dict = {}
+for index, row in df_lookup_excel.iterrows():
+  map_key = str(df_lookup_excel.iloc[index, 0]).strip()
+  if map_key not in lookup_dict:
+    lookup_dict[map_key] = str(df_lookup_excel.iloc[index, 1]).strip()
+  else:
+    raise ValueError("Error: Duplicate key found in lookup.xlsx")
 
 in_customer_section = False
 customer_inv_tuple_list = []
@@ -36,13 +46,21 @@ new_column_values = []
 for index, row in df_2_csv.iterrows():
   # Get the description from the current row
   description = df_2_csv.iloc[index, 1]
-  description = re.sub(r'(?i)SUP', 'SVP', description)
+  # Append the result to the list of new column values
+  new_column_values.append('')
+
+  # Skip the row if the description starts with 'POS '
+  if description.startswith('POS '):
+    continue
+
+  # Replace 'SUP' with 'SVP' in the description
+  updated_description = re.sub(r'(?i)SUP', 'SVP', description)
+
   # Search the description for the pattern
-  matches = pattern.finditer(description)
+  matches = pattern.finditer(updated_description)
   # Set the result to '' by default
   result = ''
-  # Append the result to the list of new column values
-  new_column_values.append(result)
+  
   # If the pattern was found, set the result to the match; otherwise, set the result to ''
   for match in matches:
     keyword = match.group(1).upper()
@@ -63,6 +81,12 @@ for index, row in df_2_csv.iterrows():
     # This is to treat MAP as priority over MOP and SVP
     if new_column_values[-1] != '' and keyword == 'MAP':
       break
+
+  if new_column_values[-1] == '':
+    for key, value in lookup_dict.items():
+      if value in description:
+        new_column_values[-1] = key
+        break
 
 # Set the 'MAPID' column to the list of new column values
 df_2_csv['MAPID'] = new_column_values
