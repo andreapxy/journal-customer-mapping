@@ -36,6 +36,7 @@ new_column_values = []
 for index, row in df_2_csv.iterrows():
   # Get the description from the current row
   description = df_2_csv.iloc[index, 1]
+  description = re.sub(r'(?i)SUP', 'SVP', text)
   # Search the description for the pattern
   matches = pattern.finditer(description)
   # Set the result to '' by default
