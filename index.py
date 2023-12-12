@@ -81,6 +81,18 @@ for index, row in df_2_csv.iterrows():
     # This is to treat MAP as priority over MOP and SVP
     if new_column_values[-1] != '' and keyword == 'MAP':
       break
+  
+  pattern_digits = re.compile(r'\b\d{1,7}\b')
+  matches_digits = pattern_digits.findall(description)
+  for match in matches_digits:
+    if len(match) < 8:
+      number = '0' * (8 - len(match)) + match
+    result = f'SVP{number}'
+    # Iterate through the list of customer invoice tuples, and if the invoice number matches, set the result to the customer account
+    for customer_inv_tuple in customer_inv_tuple_list:
+      if customer_inv_tuple[1] == result:
+        new_column_values[-1] = customer_inv_tuple[0]
+        break
 
   if new_column_values[-1] == '':
     for key, value in lookup_dict.items():
