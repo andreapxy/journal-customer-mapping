@@ -92,7 +92,7 @@ for index, row in df_2_csv.iterrows():
         pattern_digits = re.compile(r'\b\d{1,8}\b')
         matches_digits = pattern_digits.findall(description)
         for match in matches_digits:
-            if len(match) < 8:
+            if len(match) <= 8:
                 number = '0' * (8 - len(match)) + match
             result = f'SVP{number}'
             # Iterate through the list of customer invoice tuples, and if the invoice number matches, set the result
