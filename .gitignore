@@ -2,3 +2,4 @@ excel-files
 *.xlsx
 *.csv
 test*
+.idea
