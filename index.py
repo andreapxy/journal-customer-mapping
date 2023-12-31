@@ -30,12 +30,12 @@ for index, row in df_inv_excel.iterrows():
         in_customer_section = True
     else:
         if pd.isnull(df_inv_excel.iloc[index, 0]) and pd.isnull(df_inv_excel.iloc[index, 1]) and pd.isnull(
-            df_inv_excel.iloc[index, 2]):
+                df_inv_excel.iloc[index, 2]):
             in_customer_section = False
             continue
         if in_customer_section and not pd.isnull(df_inv_excel.iloc[index, 2]):
             if df_inv_excel.iloc[index, 2].startswith('SVP') or df_inv_excel.iloc[index, 2].startswith('MOP') or \
-                df_inv_excel.iloc[index, 2].startswith('PFTI'):
+                    df_inv_excel.iloc[index, 2].startswith('PFTI'):
                 customer_inv_tuple_list.append((customer_account, df_inv_excel.iloc[index, 2]))
 
 # Read the Bank Transactions CSV file into a pandas DataFrame
@@ -111,7 +111,7 @@ for index, row in df_2_csv.iterrows():
 # Set the 'MAPID' column to the list of new column values
 df_2_csv['MAPID'] = new_column_values
 
-# create a array with 10 empty strings
+# create an array with 10 empty strings
 empty_array = [''] * 10
 
 # Create a new dictionary to store the results in desired format
@@ -121,7 +121,8 @@ results_dict = {
     'Company': ['AUJW'] * len(df_2_csv),
     'Account': new_column_values,
     'Name': [''] * len(df_2_csv),
-    'Description': [f"DD {datetime.datetime.strptime(date, '%d/%m/%Y').strftime('%d%m%y')}" for date in df_2_csv['Process date'].tolist()],
+    'Description': [f"DD {datetime.datetime.strptime(date, '%d/%m/%Y').strftime('%d%m%y')}" for date in
+                    df_2_csv['Process date'].tolist()],
     'Debit': [0] * len(df_2_csv),
     'Credit': df_2_csv[' Credit'].tolist(),
     'Currency': ['AUD'] * len(df_2_csv),
